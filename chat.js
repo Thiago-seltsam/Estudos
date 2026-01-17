@@ -88,7 +88,6 @@ function deleteData(filtro) {
     });
 }
 
-// =================== EXEMPLO DE USO ===================
 postData({ modelo: "Argo", marca: "Fiat", ano: 2023 })
   .then(() => getData("id_item=eq.5"))          // GET
   .then(() => patchData("id_item=eq.5", { ano: 2020 })) // PATCH
