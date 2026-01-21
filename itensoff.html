@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUD Offshore - JS Puro</title>
+<style>
+body {margin:0;font-family:Arial,sans-serif;background:#f2f2f2;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:50px 0;}
+.wrapper {width:100%;max-width:900px;display:flex;flex-direction:column;align-items:center;gap:20px;}
+.card {background:#fff;padding:30px;width:100%;text-align:center;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,.1);}
+.card h2 {margin-bottom: 15px;font-size: 24px;color:#333;}
+.card-options {display:flex;flex-wrap:wrap;justify-content:center;gap:15px;margin-top:20px;}
+.card-options button {flex:1 1 150px;padding:15px 20px;border:none;border-radius:10px;font-size:16px;font-weight:bold;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;color:#fff;transition: all 0.2s ease-in-out;}
+.card-options button:hover {transform: translateY(-3px) scale(1.05);box-shadow:0 6px 12px rgba(0,0,0,0.2);}
+.buscar { background:#5b7cfa; }
+.registrar { background:#28a745; }
+.atualizar { background:#ffc107; color:#000; }
+.deletar { background:#dc3545; }
+.page { display:none; background:#fff; padding:20px; width:100%; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.1);}
+input { width:100%; padding:8px; margin:5px 0; }
+table { width:100%; border-collapse:collapse; margin-top:10px; text-align:left; table-layout: fixed; }
+th, td { border:1px solid #ccc; padding:8px; word-wrap: break-word; }
+th { background:#eee; }
+.success{color:green;}
+.error{color:red;}
+.centered-table { display:flex; justify-content:center; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Card inicial -->
+  <div class="card">
+    <h2>Sistema de Itens Offshore</h2>
+    <div class="card-options">
+      <button class="buscar" onclick="abrirPagina('get')">🔍 Buscar</button>
+      <button class="registrar" onclick="abrirPagina('post')">➕ Registrar</button>
+      <button class="atualizar" onclick="abrirPagina('patch')">✏️ Atualizar</button>
+      <button class="deletar" onclick="abrirPagina('delete')">🗑️ Deletar</button>
+    </div>
+  </div>
+
+  <!-- GET -->
+  <div class="page" id="get">
+    <h3>Itens Cadastrados</h3>
+    <button onclick="get()">Atualizar tabela</button>
+    <div id="resultadoGet" class="centered-table"></div>
+    <button onclick="fecharPagina('get')">Voltar</button>
+  </div>
+
+  <!-- POST -->
+  <div class="page" id="post">
+    <h3>Registrar Item</h3>
+    <input id="pid" type="number" placeholder="ID (opcional)">
+    <input id="pc" placeholder="Categoria">
+    <input id="pn" placeholder="Nome">
+    <input id="pf" placeholder="Fornecedor">
+    <input id="pl" placeholder="Local">
+    <input id="pe" type="number" placeholder="Estoque">
+    <button onclick="postItem()">Salvar</button>
+    <pre id="resultadoPost"></pre>
+    <button onclick="fecharPagina('post')">Voltar</button>
+  </div>
+
+  <!-- PATCH -->
+  <div class="page" id="patch">
+    <h3>Atualizar Item</h3>
+    <input id="pid2" type="number" placeholder="ID">
+    <input id="pn2" placeholder="Novo nome">
+    <input id="pf2" placeholder="Novo fornecedor">
+    <input id="pl2" placeholder="Novo local">
+    <input id="pe2" type="number" placeholder="Novo estoque">
+    <button onclick="patchItem()">Atualizar</button>
+    <pre id="resultadoPatch"></pre>
+    <button onclick="fecharPagina('patch')">Voltar</button>
+  </div>
+
+  <!-- DELETE -->
+  <div class="page" id="delete">
+    <h3>Deletar Item</h3>
+    <input id="did" type="number" placeholder="ID do item">
+    <button class="deletar" onclick="deletarItem()">Deletar</button>
+    <pre id="resultadoDelete"></pre>
+    <button onclick="fecharPagina('delete')">Voltar</button>
+  </div>
+
+</div>
+
+<script>
+const URL = "https://luabfnznxvgecovukmpd.supabase.co/rest/v1/ItensOffshore";
+const headers = { 
+  "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1YWJmbnpueHZnZWNvdnVrbXBkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDI3ODUzOSwiZXhwIjoyMDc5ODU0NTM5fQ.vFJ7kmVk6qsiuGv9MOLSUCOS_8XrOBaWUcH6Kn4yG0",
+  "Accept": "application/json"
+};
+
+const pages = {
+  get: document.getElementById('get'),
+  post: document.getElementById('post'),
+  patch: document.getElementById('patch'),
+  delete: document.getElementById('delete')
+};
+
+function abrirPagina(id){
+  Object.values(pages).forEach(p=>p.style.display='none');
+  pages[id].style.display='block';
+}
+function fecharPagina(id){ pages[id].style.display='none'; }
+
+// GET
+function get(){
+  const container = document.getElementById("resultadoGet");
+  container.innerHTML = "Carregando...";
+  fetch(URL+"?select=*", { headers })
+    .then(r=>{ if(!r.ok) throw new Error(r.statusText); return r.json(); })
+    .then(data=>{
+      if(!data.length){ container.innerHTML="Nenhum item encontrado"; return; }
+      data.sort((a,b)=>a.id-b.id);
+      let html='<table><tr><th>ID</th><th>Categoria</th><th>Nome</th><th>Fornecedor</th><th>Local</th><th>Estoque</th></tr>';
+      data.forEach(i=>{
+        html+=`<tr>
+                  <td>${i.id}</td>
+                  <td>${i.Categoria||'-'}</td>
+                  <td>${i.Nome||'-'}</td>
+                  <td>${i.Fornecedor||'-'}</td>
+                  <td>${i.Local||'-'}</td>
+                  <td>${i.Estoque||0}</td>
+               </tr>`;
+      });
+      html+='</table>';
+      container.innerHTML=html;
+    })
+    .catch(err=>container.innerHTML="Erro: "+err.message);
+}
+
+// POST
+function postItem(){
+  const id = document.getElementById("pid").value.trim();
+  const categoria = document.getElementById("pc").value.trim();
+  const nome = document.getElementById("pn").value.trim();
+  const fornecedor = document.getElementById("pf").value.trim();
+  const local = document.getElementById("pl").value.trim();
+  const estoque = Number(document.getElementById("pe").value);
+
+  if(!categoria || !nome || !fornecedor || isNaN(estoque)){
+    document.getElementById("resultadoPost").textContent="Preencha todos os campos obrigatórios";
+    return;
+  }
+
+  const dados = { Categoria: categoria, Nome: nome, Fornecedor: fornecedor, Local: local, Estoque: estoque };
+  if(id) dados.id = Number(id);
+
+  fetch(URL, {
+    method:"POST",
+    headers:{ ...headers, "Content-Type":"application/json", "Prefer":"return=representation" },
+    body: JSON.stringify(dados)
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    document.getElementById("resultadoPost").textContent="✅ Item cadastrado:\n"+JSON.stringify(data,null,2);
+    get();
+  })
+  .catch(()=>document.getElementById("resultadoPost").textContent="❌ Erro ao cadastrar item");
+}
+
+// PATCH
+function patchItem(){
+  const id = document.getElementById("pid2").value;
+  if(!id){ alert("Informe o ID"); return; }
+  const dados = {};
+  if(document.getElementById("pn2").value) dados.Nome=document.getElementById("pn2").value.trim();
+  if(document.getElementById("pf2").value) dados.Fornecedor=document.getElementById("pf2").value.trim();
+  if(document.getElementById("pl2").value) dados.Local=document.getElementById("pl2").value.trim();
+  if(document.getElementById("pe2").value) dados.Estoque=Number(document.getElementById("pe2").value);
+  if(Object.keys(dados).length===0){
+    document.getElementById("resultadoPatch").textContent="Informe pelo menos um campo para atualizar.";
+    return;
+  }
+
+  fetch(URL+"?id=eq."+id, {
+    method:"PATCH",
+    headers:{ ...headers, "Content-Type":"application/json", "Prefer":"return=representation" },
+    body: JSON.stringify(dados)
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    document.getElementById("resultadoPatch").textContent="✅ Item atualizado:\n"+JSON.stringify(data,null,2);
+    get();
+  })
+  .catch(()=>document.getElementById("resultadoPatch").textContent="❌ Erro ao atualizar item");
+}
+
+// DELETE
+function deletarItem(){
+  const id = document.getElementById("did").value;
+  if(!id){ alert("Informe o ID"); return; }
+  fetch(URL+"?id=eq."+id, {method:"DELETE", headers})
+    .then(r=>{
+      if(!r.ok) throw new Error(r.statusText);
+      document.getElementById("resultadoDelete").textContent="✅ Item deletado!";
+      get();
+    })
+    .catch(()=>document.getElementById("resultadoDelete").textContent="❌ Erro ao deletar item");
+}
+
+// Inicializa GET
+get();
+</script>
+</body>
+</html>
