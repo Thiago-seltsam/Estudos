@@ -16,4 +16,4 @@ fetch("http://localhost:3000/carros",{
 
 .then(function(data){
     console.log("Resultado da API:");
-    console.log(data[0].marca);});
+    console.log(data[0]);});
