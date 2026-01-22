@@ -1,68 +1,662 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Menu Inicial</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https: data:;
+                 script-src 'self' https: 'unsafe-inline';
+                 style-src 'self' https: 'unsafe-inline';">
+  <title>Sistema Offshore</title>
 
   <style>
+    :root {
+      --bg: #020617;
+      --card: #0b1220;
+      --primary: #0ea5e9;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --radius: 12px;
+      --shadow: 0 10px 24px rgba(0,0,0,.45);
+    }
+
     body {
       margin: 0;
-      height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(180deg, rgba(237, 208, 208, 0.865), rgba(248, 239, 237, 0.689)),
+        url("https://wallpaperaccess.com/full/4266234.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text);
+    }
+
+ /* TITULO SISTEMA MAIOR */
+  .titulo-sistema {
+    font-size: 36px;
+    font-weight: 700;
+    padding: 18px 0;
+    margin-bottom: 20px;
+    color: #ffffff;
+    background: linear-gradient(90deg, #1e293b, #334155, #1e293b);
+    text-align: center;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+
+  /* CAIXA DE LOGIN, CADASTRO E SENHA */
+  .box {
+    max-width: 450px;              /* Maior largura */
+    margin: 60px auto;             /* Espaçamento do topo */
+    padding: 30px 25px;            /* Padding interno maior */
+    background: rgba(6, 12, 28, 0.95);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+
+    /* Transição para efeito dinâmico */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* Efeito hover */
+  .box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,.6);
+  }
+
+  h2 {
+    margin-top: 0;
+    font-weight: 600;
+  }
+
+  /* INPUTS E BOTÕES MAIORES */
+  input, button {
+    width: 100%;
+    padding: 14px 12px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+  }
+
+  input {
+    background: #020617;
+    color: white;
+    border: 1px solid #1e293b;
+  }
+
+  button {
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+    transition: filter 0.2s ease;
+  }
+
+  button:hover {
+    filter: brightness(1.15);
+  }
+
+  .link {
+    color: #7dd3fc;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 6px;
+    display: block;
+  }
+
+  #app {
+    display: none;
+    min-height: 100vh;
+    padding: 20px;
+    background: rgba(2, 6, 23, 0.7);
+    text-align: center;
+  }
+
+  /* ... restante do CSS existente (carrossel, painel, etc.) permanece igual / alteração 22/01... */
+
+    nav {
       display: flex;
       justify-content: center;
-      align-items: center;
-      background-color: #f2f2f2;
-      font-family: Arial, sans-serif;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
     }
 
-    .container {
-      background-color: #ffffff;
-      padding: 30px 40px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      width: 300px;
+    nav button {
+      width: auto;
+      padding: 10px 16px;
+      border-radius: 20px;
     }
 
-    button {
+    .painel {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .voltar-btn {
+      background: #64748b;
+      margin-top: 12px;
+    }
+
+    .voltar-btn:hover {
+      background: #475569;
+    }
+
+    .carousel-container {
+      position: relative;
       width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-      margin: 10px 0;
+      max-width: 900px;
+      margin: 20px auto 32px;
+      padding: 0 50px;
     }
 
-    button:hover {
-      background-color: #0056b3;
+    .carousel-viewport {
+      overflow: hidden;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+
+    .carousel-card {
+      min-width: 260px;
+      max-width: 260px;
+      margin: 0 10px;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.45);
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .carousel-card strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--primary);
+      border: none;
+      color: white;
+      font-size: 18px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 5;
+    }
+
+    .carousel-prev { left: 10px; }
+    .carousel-next { right: 10px; }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #334155;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .carousel-dot.active {
+      width: 20px;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+
+    .categoria-titulo {
+      margin-top: 26px;
+      margin-bottom: 8px;
+      font-size: 17px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    textarea, pre {
+      background: #020617;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #1e293b;
+      width: 100%;
+      max-width: 500px;
+      margin: 10px auto;
+      display: block;
+      text-align: left;
     }
   </style>
 </head>
-
 <body>
 
-  <div class="container">
-    <h2>Sistema de Itens</h2>
-
-    <button onclick="location.href='mostrar.html'">
-      Buscar itens
-    </button>
-
-    <button onclick="location.href='registrar.html'">
-      Registrar item
-    </button>
-
-    <button onclick="location.href='atualizar.html'">
-      Atualizar item
-    </button>
-
-    <button onclick="location.href='deletar.html'">
-      Deletar item
-    </button>
+  <!-- LOGIN -->
+  <div id="loginBox" class="box">
+    <div class="titulo-sistema">Itens OffShore Senai 2026</div>
+    <h2>Login</h2>
+    <input id="loginEmail" type="email" placeholder="Email">
+    <input id="loginSenha" type="password" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+    <span class="link" onclick="mostrarCadastro()">Criar conta</span>
+    <span class="link" onclick="mostrarSenha()">Esqueci minha senha</span>
   </div>
 
-</body>
-</html>
+  <!-- CADASTRO -->
+  <div id="cadastroBox" class="box" style="display:none">
+    <div class="titulo-sistema">Itens OffShore Senai 2026</div>
+    <h2>Cadastro</h2>
+    <input id="cadEmail" type="email" placeholder="Email">
+    <input id="cadSenha" type="password" placeholder="Senha">
+    <button onclick="cadastrar()">Cadastrar</button>
+    <span class="link" onclick="mostrarLogin()">Voltar</span>
+  </div>
+
+  <!-- RECUPERAR SENHA -->
+  <div id="senhaBox" class="box" style="display:none">
+    <div class="titulo-sistema">Itens OffShore Senai 2026</div>
+    <h2>Recuperar senha</h2>
+    <input id="recEmail" type="email" placeholder="Email">
+    <button onclick="recuperarSenha()">Recuperar</button>
+    <span class="link" onclick="mostrarLogin()">Voltar</span>
+  </div>
+
+  <!-- APP -->
+  <div id="app">
+    <div class="titulo-sistema">Itens OffShore Senai 2026</div>
+
+    <nav>
+      <button onclick="abrirPagina('get')">🔍 Buscar</button>
+      <button onclick="abrirPagina('post')">➕ Registrar</button>
+      <button onclick="abrirPagina('patch')">✏️ Atualizar</button>
+      <button onclick="abrirPagina('delete')">🗑️ Deletar</button>
+    </nav>
+
+    <div class="painel">
+      <div id="get" style="display:none">
+        <input id="busca" placeholder="Buscar...">
+        <div id="resultadoGet"></div>
+      </div>
+
+      <div id="post" style="display:none">
+  <input id="pi" placeholder="ID (opcional)"> <!-- novo campo para ID -->
+  <input id="pc" placeholder="Categoria">
+  <input id="pn" placeholder="Nome">
+  <input id="pf" placeholder="Fornecedor">
+  <input id="pl" placeholder="Local">
+  <input id="pe" placeholder="Estoque" type="number">
+  <button onclick="postItem()">Registrar</button>
+  <pre id="resultadoPost"></pre>
+</div>
+
+
+      <div id="patch" style="display:none">
+        <input id="pid2" placeholder="ID">
+        <input id="pn2" placeholder="Nome">
+        <input id="pf2" placeholder="Fornecedor">
+        <input id="pl2" placeholder="Local">
+        <input id="pe2" placeholder="Estoque" type="number">
+        <button onclick="patchItem()">Atualizar</button>
+        <pre id="resultadoPatch"></pre>
+      </div>
+
+      <div id="delete" style="display:none">
+        <input id="did" placeholder="ID">
+        <button onclick="deletarItem()">Deletar</button>
+        <pre id="resultadoDelete"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+/* =========================
+   UTILITÁRIOS
+========================= */
+function getInputValue(id) {
+  return document.getElementById(id).value.trim();
+}
+
+function mostrarBox(box) {
+  loginBox.style.display = "none";
+  cadastroBox.style.display = "none";
+  senhaBox.style.display = "none";
+  box.style.display = "block";
+}
+
+/* =========================
+   LOGIN / CADASTRO / SENHA
+========================= */
+let usuarioLogado = false;
+
+const loginBox = document.getElementById("loginBox");
+const cadastroBox = document.getElementById("cadastroBox");
+const senhaBox = document.getElementById("senhaBox");
+const app = document.getElementById("app");
+
+function mostrarCadastro() { mostrarBox(cadastroBox); }
+function mostrarLogin()    { mostrarBox(loginBox); }
+function mostrarSenha()    { mostrarBox(senhaBox); }
+
+function cadastrar() {
+  const email = getInputValue("cadEmail");
+  const senha = getInputValue("cadSenha");
+
+  localStorage.setItem("usuario_email", email);
+  localStorage.setItem("usuario_senha", senha);
+
+  alert("Cadastro realizado!");
+  mostrarLogin();
+}
+
+function recuperarSenha() {
+  const email = getInputValue("recEmail");
+  const emailSalvo = localStorage.getItem("usuario_email");
+  if (email === emailSalvo) alert("Sua senha é: " + localStorage.getItem("usuario_senha"));
+  else alert("Email não encontrado.");
+}
+
+function login() {
+  const email = getInputValue("loginEmail");
+  const senha = getInputValue("loginSenha");
+
+  const emailSalvo = localStorage.getItem("usuario_email");
+  const senhaSalva = localStorage.getItem("usuario_senha");
+
+  if (email === emailSalvo && senha === senhaSalva) {
+    usuarioLogado = true;
+    mostrarBox({style:{display:"none"}}); // oculta todos
+    app.style.display = "block";
+    abrirPagina("get");
+  } else {
+    alert("Email ou senha inválidos!");
+  }
+}
+
+/* =========================
+   SUPABASE CONFIG
+========================= */
+const URL = "https://luabfnznxvgecovukmpd.supabase.co/rest/v1/ItensOffshore";
+const headers = {
+  apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1YWJmbnpueHZnZWNvdnVrbXBkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDI3ODUzOSwiZXhwIjoyMDc5ODU0NTM5fQ.vFJ7kmVk6mQsiuGv9MOLSUCOS_8XrOBaWUcH6Kn4yG0"
+};
+
+/* =========================
+   CONTROLE DE PÁGINAS
+========================= */
+const pages = {
+  get: document.getElementById("get"),
+  post: document.getElementById("post"),
+  patch: document.getElementById("patch"),
+  delete: document.getElementById("delete")
+};
+
+let dadosCache = [];
+
+function abrirPagina(id) {
+  if (!usuarioLogado && !["get","post","patch","delete"].includes(id)) return;
+  Object.values(pages).forEach(p => p.style.display = "none");
+  pages[id].style.display = "block";
+  if (id === "get") buscarItens();
+}
+
+function voltar() {
+  Object.values(pages).forEach(p => p.style.display = "none");
+}
+
+/* =========================
+   GET + CARROSSEL
+========================= */
+async function buscarItens() {
+  const container = document.getElementById("resultadoGet");
+  container.innerHTML = "Carregando...";
+
+  try {
+    const response = await fetch(URL + "?select=*", { headers });
+    const data = await response.json();
+    dadosCache = data;
+    renderizar(data);
+  } catch {
+    container.innerHTML = "Erro ao carregar dados";
+  }
+}
+
+function renderizar(data) {
+  const filtro = getInputValue("busca").toLowerCase();
+  const filtrados = data.filter(i =>
+    i.Nome?.toLowerCase().includes(filtro) ||
+    i.Fornecedor?.toLowerCase().includes(filtro) ||
+    i.Local?.toLowerCase().includes(filtro)
+  );
+
+  const categorias = {};
+  filtrados.forEach(i => {
+    const cat = i.Categoria || "Sem categoria";
+    if (!categorias[cat]) categorias[cat] = [];
+    categorias[cat].push(i);
+  });
+
+  let html = "";
+  for (const cat in categorias) {
+    const id = "carousel_" + cat.replace(/\s+/g, "_");
+    html += `<div class="categoria">
+      <div class="categoria-titulo">${cat}</div>
+      <div class="carousel-container" data-id="${id}">
+        <button class="carousel-btn carousel-prev" onclick="mover('${id}', -1)">❮</button>
+        <div class="carousel-viewport">
+          <div class="carousel-track" id="${id}">`;
+    categorias[cat].forEach(i => {
+      html += `<div class="carousel-card">
+        <strong>${i.Nome}</strong>
+        ID: ${i.id}<br>
+        Fornecedor: ${i.Fornecedor || "-"}<br>
+        Local: ${i.Local || "-"}<br>
+        Estoque: ${i.Estoque ?? 0}
+      </div>`;
+    });
+    html += `</div></div>
+        <button class="carousel-btn carousel-next" onclick="mover('${id}', 1)">❯</button>
+        <div class="carousel-dots" id="dots_${id}"></div>
+      </div>
+    </div>`;
+  }
+
+  document.getElementById("resultadoGet").innerHTML = html || "Nenhum item encontrado";
+  inicializarCarrosseis();
+}
+
+/* =========================
+   BUSCA COM DEBOUNCE
+========================= */
+let debounceTimer;
+document.getElementById("busca").addEventListener("input", () => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => renderizar(dadosCache), 300);
+});
+
+/* =========================
+   CARROSSEL ENGINE
+========================= */
+const carousels = {};
+
+function inicializarCarrosseis() {
+  document.querySelectorAll(".carousel-container").forEach(container => {
+    const id = container.dataset.id;
+    const track = document.getElementById(id);
+    const cards = track.children.length;
+    const dots = document.getElementById("dots_" + id);
+    const cardWidth = 280;
+    const visible = Math.floor(container.querySelector(".carousel-viewport").offsetWidth / cardWidth);
+    const max = Math.max(0, cards - visible);
+    carousels[id] = { pos: 0, max, track, dots };
+    renderDots(id);
+    autoPlay(id);
+  });
+}
+
+function renderDots(id) {
+  const c = carousels[id];
+  c.dots.innerHTML = "";
+  for (let i = 0; i <= c.max; i++) {
+    const dot = document.createElement("div");
+    dot.className = "carousel-dot" + (i === 0 ? " active" : "");
+    dot.onclick = () => irPara(id, i);
+    c.dots.appendChild(dot);
+  }
+}
+
+function atualizarDots(id) {
+  [...carousels[id].dots.children].forEach((d, i) => {
+    d.classList.toggle("active", i === carousels[id].pos);
+  });
+}
+
+function mover(id, dir) {
+  const c = carousels[id];
+  c.pos += dir;
+  if (c.pos < 0) c.pos = c.max;
+  if (c.pos > c.max) c.pos = 0;
+  aplicar(id);
+}
+
+function irPara(id, pos) {
+  carousels[id].pos = pos;
+  aplicar(id);
+}
+
+function aplicar(id) {
+  const c = carousels[id];
+  const cardWidth = 280;
+  c.track.style.transform = `translateX(-${c.pos * cardWidth}px)`;
+  atualizarDots(id);
+}
+
+function autoPlay(id) {
+  setInterval(() => mover(id, 1), 4000);
+}
+
+/* =========================
+   POST / PATCH / DELETE
+========================= */
+async function postItem() {
+  const id = document.getElementById("pi").value.trim(); // novo campo
+  const categoria = document.getElementById("pc").value.trim();
+  const nome = document.getElementById("pn").value.trim();
+  const fornecedor = document.getElementById("pf").value.trim();
+  const local = document.getElementById("pl").value.trim();
+  const estoqueInput = document.getElementById("pe").value.trim();
+  const estoque = Number(estoqueInput);
+  const resultado = document.getElementById("resultadoPost");
+
+  if (!categoria || !nome || !fornecedor || estoqueInput === "" || isNaN(estoque)) {
+    resultado.textContent = "Preencha todos os campos obrigatórios.";
+    return;
+  }
+
+  const bodyData = {
+    Categoria: categoria,
+    Nome: nome,
+    Fornecedor: fornecedor,
+    Local: local,
+    Estoque: estoque
+  };
+
+  if (id) bodyData.id = id; // só envia o ID se o usuário informar
+
+  try {
+    const response = await fetch(URL, {
+      method: "POST",
+      headers: { ...headers, "Content-Type": "application/json", "Prefer": "return=representation" },
+      body: JSON.stringify(bodyData)
+    });
+
+    if (!response.ok) throw new Error();
+
+    const dadosInseridos = await response.json();
+    resultado.textContent = `✅ Item registrado! ID: ${dadosInseridos[0].id}`;
+    alert(`✅ Item Adicionado:\nID: ${dadosInseridos[0].id}\nNome: ${dadosInseridos[0].Nome}\nFornecedor: ${dadosInseridos[0].Fornecedor}\nLocal: ${dadosInseridos[0].Local}\nEstoque: ${dadosInseridos[0].Estoque}`);
+
+    buscarItens();
+  } catch {
+    resultado.textContent = "Erro ao registrar item.";
+  }
+}
+
+async function patchItem() {
+  const id = getInputValue("pid2");
+  const resultado = document.getElementById("resultadoPatch");
+  if (!id) { resultado.textContent = "Informe o ID."; return; }
+
+  const dados = {};
+  const nome = getInputValue("pn2");
+  const fornecedor = getInputValue("pf2");
+  const local = getInputValue("pl2");
+  const estoqueInput = getInputValue("pe2");
+
+  if (nome) dados.Nome = nome;
+  if (fornecedor) dados.Fornecedor = fornecedor;
+  if (local) dados.Local = local;
+  if (estoqueInput !== "") dados.Estoque = Number(estoqueInput);
+
+  if (Object.keys(dados).length === 0) { resultado.textContent = "Informe algum campo."; return; }
+
+  try {
+    const response = await fetch(URL + "?id=eq." + id, {
+      method: "PATCH",
+      headers: { ...headers, "Content-Type": "application/json", "Prefer": "return=representation" },
+      body: JSON.stringify(dados)
+    });
+    if (!response.ok) throw new Error();
+    const dadosAtualizados = await response.json();
+    resultado.textContent = "Atualizado!";
+    buscarItens();
+    alert(`✏️ Item Atualizado:\nID: ${dadosAtualizados[0].id}\nNome: ${dadosAtualizados[0].Nome}\nFornecedor: ${dadosAtualizados[0].Fornecedor}\nLocal: ${dadosAtualizados[0].Local}\nEstoque: ${dadosAtualizados[0].Estoque}`);
+  } catch {
+    resultado.textContent = "Erro ao atualizar.";
+  }
+}
+
+async function deletarItem() {
+  const id = getInputValue("did");
+  const resultado = document.getElementById("resultadoDelete");
+  if (!id) { resultado.textContent = "Informe o ID."; return; }
+
+  try {
+    const fetchItem = await fetch(URL + "?id=eq." + id, { headers });
+    const item = await fetchItem.json();
+    if (!item || item.length === 0) { resultado.textContent = "Item não encontrado."; return; }
+
+    const response = await fetch(URL + "?id=eq." + id, { method: "DELETE", headers });
+    if (!response.ok) throw new Error();
+
+    resultado.textContent = "Deletado!";
+    buscarItens();
+    alert(`🗑️ Item Deletado:\nID: ${item[0].id}\nNome: ${item[0].Nome}\nFornecedor: ${item[0].Fornecedor}\nLocal: ${item[0].Local}\nEstoque: ${item[0].Estoque}`);
+  } catch {
+    resultado.textContent = "Erro ao deletar.";
+  }
+}
+
+/* =========================
+   EXPÕE FUNÇÕES
+========================= */
+window.mostrarCadastro = mostrarCadastro;
+window.mostrarLogin = mostrarLogin;
+window.mostrarSenha = mostrarSenha;
+window.cadastrar = cadastrar;
+window.login = login;
+window.recuperarSenha = recuperarSenha;
+window.abrirPagina = abrirPagina;
+window.voltar = voltar;
+window.postItem = postItem;
+window.patchItem = patchItem;
+window.deletarItem = deletarItem;
+window.mover = mover;
+</script>
+<!-- End of file html.html -->
