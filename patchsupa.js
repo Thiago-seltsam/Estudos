@@ -1,6 +1,6 @@
-const chavekey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1YWJmbnpueHZnZWNvdnVrbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQyNzg1MzksImV4cCI6MjA3OTg1NDUzOX0.sc4W-ySg3yHMsEJlIPjT_0-h13Yg7OWCEc661VWU1sw"
+const chavekey = "SUA_CHAVE_API"
 
-fetch("https://luabfnznxvgecovukmpd.supabase.co/rest/v1/trabalho?id_item=eq.6",{
+fetch("SUA_URL?id_item=eq.6",{
     method: "PATCH",
     headers:{
         "Content-Type": "application/json",
