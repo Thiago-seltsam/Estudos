@@ -1,7 +1,7 @@
 const http = require("http");
 const { json } = require("node:stream/consumers");
 
-const API_KEY = "123456";
+const API_KEY = "key";
 
 //banco de dados
 let carros = [
