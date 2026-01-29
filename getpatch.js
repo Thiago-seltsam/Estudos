@@ -1,7 +1,7 @@
 // CONFIGURAÇÃO SUPABASE
-const URL = "https://luabfnznxvgecovukmpd.supabase.co/rest/v1/ItensOffshore";
+const URL = "SUA_URL";
 const headers = { 
-  "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1YWJmbnpueHZnZWNvdnVrbXBkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDI3ODUzOSwiZXhwIjoyMDc5ODU0NTM5fQ.vFJ7kmVk6qsiuGv9MOLSUCOS_8XrOBaWUcH6Kn4yG0",
+  "apikey": "SUA_CHAVE_API",
   "Accept": "application/json"
 };
 
