@@ -1,15 +1,15 @@
 <<<<<<< HEAD
-fetch("https://luabfnznxvgecovukmpd.supabase.co/rest/v1/trabalho",{
+fetch("SUA_URL_BANCO",{
     
     method:"GET",
     headers:{
-        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1YWJmbnpueHZnZWNvdnVrbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQyNzg1MzksImV4cCI6MjA3OTg1NDUzOX0.sc4W-ySg3yHMsEJlIPjT_0-h13Yg7OWCEc661VWU1sw"
+        apikey: "SUA_API_KEY"
 =======
-fetch("https://luabfnznxvgecovukmpd.supabase.co",{
+fetch("SUA_URL",{
     
     method:"GET",
     headers:{
-        "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1YWJmbnpueHZnZWNvdnVrbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQyNzg1MzksImV4cCI6MjA3OTg1NDUzOX0.sc4W-ySg3yHMsEJlIPjT_0-h13Yg7OWCEc661VWU1sw"
+        "x-api-key": "SUA_CHAVE_API"
 >>>>>>> 039f31d0bbef92e9b16c21e2d88df072fcf5eb58
     }
 }
