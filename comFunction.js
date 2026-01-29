@@ -1,6 +1,6 @@
-const URL = "https://luabfnznxvgecovukmpd.supabase.co/rest/v1/trabalho?id_item=eq.6";
+const URL = "SUA_URL?id_item=eq.6";
 const headers = {
-    apikey:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1YWJmbnpueHZnZWNvdnVrbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQyNzg1MzksImV4cCI6MjA3OTg1NDUzOX0.sc4W-ySg3yHMsEJlIPjT_0-h13Yg7OWCEc661VWU1sw",
+    apikey:"SUA_CHAVE_API",
     "Content-Type": "application/json"
 };
 
