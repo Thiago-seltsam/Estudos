@@ -3,7 +3,7 @@ fetch("http://localhost:3000/carros",{
     method:"GET",
 
     headers:{
-        "x-api-key": "12356"
+        "x-api-key": "CHAVE_API_LOCAL"
     }
 
 })
