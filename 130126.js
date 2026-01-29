@@ -1,8 +1,8 @@
 const http = require("http");
 
-const SUPABASE_URL = "https://luabfnznxvgecovukmpd.supabase.co/rest/v1/trabalho";
+const SUPABASE_URL = "SUA_URL";
 const API_KEY = "123456";
-const SUPA_BASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1YWJmbnpueHZnZWNvdnVrbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQyNzg1MzksImV4cCI6MjA3OTg1NDUzOX0.sc4W-ySg3yHMsEJlIPjT_0-h13Yg7OWCEc661VWU1sw";
+const SUPA_BASE_ANON_KEY = "CHAVE_API";
 let requisicoes = 0;
 
 const server = http.createServer((req, res) => {
